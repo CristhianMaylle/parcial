@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "C:\Users\Cristhian\OneDrive\OCTAVO_CICLO\BI\parcial\dashboard\app.py", line 1461, in <module>
+    app.run(debug=debug, host="0.0.0.0", port=port)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Cristhian\OneDrive\OCTAVO_CICLO\BI\parcial\venv\Lib\site-packages\dash\dash.py", line 2099, in run
+    debug = self.enable_dev_tools(
+        debug,
+    ...<8 lines>...
+        dev_tools_prune_errors,
+    )
+  File "C:\Users\Cristhian\OneDrive\OCTAVO_CICLO\BI\parcial\venv\Lib\site-packages\dash\dash.py", line 1815, in enable_dev_tools
+    pkgutil.find_loader(x)
+    ^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'pkgutil' has no attribute 'find_loader'

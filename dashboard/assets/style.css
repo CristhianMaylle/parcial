@@ -1,0 +1,694 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   Olist BI Dashboard — Tema Futurista · Capítulo 9
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  --bg-primary:    #04080f;
+  --bg-secondary:  #080f1e;
+  --bg-card:       rgba(8, 15, 30, 0.88);
+  --bg-card-hover: rgba(12, 22, 45, 0.95);
+  --cyan:    #00f5ff;
+  --purple:  #8b5cf6;
+  --pink:    #f43f5e;
+  --green:   #10b981;
+  --amber:   #f59e0b;
+  --red:     #ef4444;
+  --text-1:  #e2e8f0;
+  --text-2:  #94a3b8;
+  --text-3:  #64748b;
+  --border:  rgba(0, 245, 255, 0.15);
+  --glow-c:  0 0 20px rgba(0,245,255,0.25);
+  --glow-p:  0 0 20px rgba(139,92,246,0.25);
+  --glow-g:  0 0 20px rgba(16,185,129,0.30);
+  --glow-r:  0 0 20px rgba(239,68,68,0.30);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body, #_dash-app-content {
+  background: var(--bg-primary);
+  background-image:
+    radial-gradient(ellipse at 20% 50%, rgba(0,245,255,0.04) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 20%, rgba(139,92,246,0.05) 0%, transparent 55%),
+    radial-gradient(ellipse at 50% 90%, rgba(244,63,94,0.03) 0%, transparent 50%);
+  color: var(--text-1);
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+  min-height: 100vh;
+}
+
+/* ─── Scrollbar ───────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-secondary); }
+::-webkit-scrollbar-thumb { background: var(--cyan); border-radius: 3px; }
+
+/* ─── Header ─────────────────────────────────────────────────────────────── */
+#header {
+  background: linear-gradient(135deg,
+    rgba(0,245,255,0.06) 0%,
+    rgba(8,15,30,0.97) 40%,
+    rgba(139,92,246,0.06) 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  backdrop-filter: blur(12px);
+}
+
+.header-logo {
+  font-size: 1.5rem;
+  font-weight: 800;
+  background: linear-gradient(90deg, var(--cyan), var(--purple));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: 1px;
+}
+
+.header-subtitle {
+  font-size: 0.72rem;
+  color: var(--text-3);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+.header-time {
+  font-size: 0.78rem;
+  color: var(--cyan);
+  font-family: 'Courier New', monospace;
+  padding: 6px 14px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: rgba(0,245,255,0.05);
+}
+
+/* ─── Tabs ────────────────────────────────────────────────────────────────── */
+.tab-nav {
+  display: flex;
+  gap: 4px;
+  background: rgba(8,15,30,0.6);
+  border-bottom: 1px solid var(--border);
+  padding: 8px 20px 0;
+  backdrop-filter: blur(8px);
+}
+
+.dash-tab {
+  color: var(--text-2) !important;
+  background: transparent !important;
+  border: none !important;
+  border-bottom: 2px solid transparent !important;
+  border-radius: 0 !important;
+  padding: 10px 20px !important;
+  font-size: 0.82rem !important;
+  letter-spacing: 0.5px !important;
+  cursor: pointer;
+  transition: all 0.25s ease !important;
+}
+
+.dash-tab:hover {
+  color: var(--cyan) !important;
+  border-bottom-color: rgba(0,245,255,0.3) !important;
+}
+
+.dash-tab--selected {
+  color: var(--cyan) !important;
+  border-bottom: 2px solid var(--cyan) !important;
+  text-shadow: 0 0 12px rgba(0,245,255,0.6) !important;
+}
+
+/* ─── Filter Panel (9.5) ─────────────────────────────────────────────────── */
+#filter-panel {
+  background: rgba(5, 14, 28, 0.85);
+  border-bottom: 1px solid rgba(0, 210, 230, 0.2);
+  padding: 14px 24px;
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 14px;
+  backdrop-filter: blur(10px);
+  /* ★ Encima del contenido de las tabs */
+  position: relative;
+  z-index: 500;
+}
+
+.filter-label {
+  font-size: 0.65rem;
+  color: #7dd3fc;          /* celeste claro */
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 5px;
+  font-weight: 600;
+}
+
+.filter-group { display: flex; flex-direction: column; }
+
+/* ── Dash Dropdown (nuevo API) ── */
+.Select-control {
+  background: rgba(0, 180, 220, 0.10) !important;
+  border: 1px solid rgba(0, 210, 240, 0.35) !important;
+  border-radius: 8px !important;
+  min-height: 36px !important;
+  cursor: pointer !important;
+  transition: border-color 0.2s !important;
+}
+.Select-control:hover {
+  border-color: rgba(0, 230, 255, 0.65) !important;
+}
+
+.Select-placeholder {
+  color: #7dd3fc !important;
+  font-size: 0.82rem !important;
+}
+
+.Select-value-label {
+  color: #e0f7ff !important;   /* blanco celeste */
+  font-size: 0.82rem !important;
+}
+
+.Select-input input {
+  color: #e0f7ff !important;
+  font-size: 0.82rem !important;
+}
+
+.Select-arrow-zone .Select-arrow {
+  border-top-color: #7dd3fc !important;
+}
+
+/* Menú desplegable (grilla de opciones) — encima del contenido */
+.Select-menu-outer {
+  background: #071e30 !important;
+  border: 1px solid rgba(0, 210, 240, 0.35) !important;
+  border-radius: 0 0 8px 8px !important;
+  box-shadow: 0 12px 32px rgba(0,0,0,0.65), 0 0 16px rgba(0,210,240,0.12) !important;
+  margin-top: 2px !important;
+  z-index: 9999 !important;
+  position: absolute !important;
+}
+
+.Select-option {
+  background: transparent !important;
+  color: #bae6fd !important;    /* celeste claro */
+  font-size: 0.82rem !important;
+  padding: 9px 14px !important;
+  border-bottom: 1px solid rgba(0,210,240,0.06) !important;
+  transition: background 0.15s !important;
+}
+
+.Select-option:hover,
+.Select-option.is-focused {
+  background: rgba(0, 210, 240, 0.14) !important;
+  color: #e0f7ff !important;
+}
+
+.Select-option.is-selected {
+  background: rgba(0, 210, 240, 0.22) !important;
+  color: #00f5ff !important;
+  font-weight: 600 !important;
+}
+
+/* ── DatePickerRange — control principal ── */
+.DateRangePickerInput {
+  background-color: #071e30 !important;   /* fondo oscuro, no blanco */
+  border: 1px solid rgba(0, 210, 240, 0.40) !important;
+  border-radius: 8px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  padding: 2px 8px !important;
+  min-width: 230px !important;
+  transition: border-color 0.2s !important;
+}
+
+.DateRangePickerInput:hover,
+.DateRangePickerInput--showClearDates:hover {
+  border-color: rgba(0, 230, 255, 0.70) !important;
+  box-shadow: 0 0 8px rgba(0, 230, 255, 0.18) !important;
+}
+
+.DateInput {
+  background: transparent !important;
+  width: 88px !important;
+}
+
+.DateInput_input {
+  background-color: transparent !important;
+  border: none !important;
+  border-bottom: 2px solid transparent !important;
+  /* texto visible sobre fondo oscuro */
+  color: #e0f7ff !important;
+  font-size: 0.82rem !important;
+  font-weight: 600 !important;
+  font-family: 'Inter', sans-serif !important;
+  padding: 6px 2px !important;
+  text-align: center !important;
+  width: 100% !important;
+  cursor: pointer !important;
+  transition: border-color 0.2s !important;
+}
+
+.DateInput_input::placeholder {
+  color: #4e8fa8 !important;
+  font-weight: 400 !important;
+}
+
+.DateInput_input--focused {
+  border-bottom: 2px solid #00f5ff !important;
+  outline: none !important;
+  color: #00f5ff !important;
+}
+
+.DateRangePickerInput_arrow {
+  color: #38bdf8 !important;
+  font-size: 0.9rem !important;
+  padding: 0 4px !important;
+}
+
+.DateRangePickerInput_calendarIcon {
+  color: #38bdf8 !important;
+  padding: 4px 6px 4px 0 !important;
+}
+.DateRangePickerInput_calendarIcon svg {
+  fill: #38bdf8 !important;
+}
+
+/* ── Calendario desplegable — POR ENCIMA de todo ── */
+.DateRangePicker_picker,
+.DateRangePicker_picker--directionLeft,
+.DateRangePicker_picker--directionRight,
+.DateRangePicker_picker--openDown,
+.DateRangePicker_picker--openUp {
+  z-index: 9999 !important;
+  background: transparent !important;
+}
+
+.DayPicker,
+.DayPicker__withBorder {
+  background-color: #071e30 !important;
+  border: 1px solid rgba(0, 210, 240, 0.30) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.70),
+              0 0 24px rgba(0, 210, 240, 0.10) !important;
+  overflow: hidden !important;
+  z-index: 9999 !important;
+}
+
+.CalendarMonthGrid,
+.CalendarMonth {
+  background: #071e30 !important;
+}
+
+.CalendarMonth_caption {
+  color: #7dd3fc !important;
+  font-size: 0.88rem !important;
+  font-weight: 700 !important;
+  padding-top: 18px !important;
+  padding-bottom: 50px !important;
+}
+
+.DayPickerNavigation_button__default {
+  border: 1px solid rgba(0, 210, 240, 0.30) !important;
+  border-radius: 6px !important;
+  background: rgba(0, 180, 220, 0.10) !important;
+}
+.DayPickerNavigation_button__default:hover {
+  background: rgba(0, 210, 240, 0.22) !important;
+  border-color: rgba(0, 230, 255, 0.55) !important;
+}
+.DayPickerNavigation_svg__horizontal { fill: #38bdf8 !important; }
+
+.DayPicker_weekHeader_li small {
+  color: #38bdf8 !important;
+  font-size: 0.78rem !important;
+  font-weight: 600 !important;
+}
+
+.CalendarDay__default {
+  background: transparent !important;
+  border: 1px solid rgba(0, 210, 240, 0.07) !important;
+  color: #bae6fd !important;
+  font-size: 0.80rem !important;
+}
+.CalendarDay__default:hover {
+  background: rgba(0, 210, 240, 0.22) !important;
+  border-color: rgba(0, 230, 255, 0.40) !important;
+  color: #fff !important;
+}
+
+.CalendarDay__selected,
+.CalendarDay__selected:active,
+.CalendarDay__selected:hover {
+  background: #0284c7 !important;
+  border-color: #0284c7 !important;
+  color: #fff !important;
+  font-weight: 700 !important;
+}
+
+.CalendarDay__selected_span {
+  background: rgba(2, 132, 199, 0.22) !important;
+  color: #e0f7ff !important;
+  border-color: rgba(2, 132, 199, 0.18) !important;
+}
+
+.CalendarDay__hovered_span,
+.CalendarDay__hovered_span:hover {
+  background: rgba(0, 210, 240, 0.14) !important;
+  color: #e0f7ff !important;
+  border-color: rgba(0, 210, 240, 0.20) !important;
+}
+
+.CalendarDay__blocked_out_of_range,
+.CalendarDay__blocked_out_of_range:hover {
+  color: #1e3a4a !important;
+  background: transparent !important;
+  cursor: not-allowed !important;
+}
+
+.DayPickerKeyboardShortcuts_show__bottomRight::before {
+  border-right-color: #0284c7 !important;
+}
+
+/* ── Dash nuevo dropdown (Select sin React-Select) ── */
+.dash-dropdown .Select-control,
+.VirtualizedSelect .Select-control {
+  background: rgba(0, 180, 220, 0.10) !important;
+  border: 1px solid rgba(0, 210, 240, 0.35) !important;
+  border-radius: 8px !important;
+}
+
+/* ── Selector limpiar (×) ── */
+.Select-clear-zone .Select-clear {
+  color: #7dd3fc !important;
+  font-size: 1rem !important;
+}
+
+.Select-clear-zone:hover .Select-clear {
+  color: #f43f5e !important;
+}
+
+/* ─── KPI Cards ──────────────────────────────────────────────────────────── */
+.kpi-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px 24px;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.25s, box-shadow 0.25s;
+  cursor: default;
+}
+
+.kpi-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--cyan), var(--purple));
+  opacity: 0.7;
+}
+
+.kpi-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--glow-c);
+  border-color: rgba(0,245,255,0.35);
+}
+
+.kpi-id {
+  font-size: 0.62rem;
+  color: var(--cyan);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+  font-family: 'Courier New', monospace;
+}
+
+.kpi-name {
+  font-size: 0.78rem;
+  color: var(--text-2);
+  margin-bottom: 10px;
+}
+
+.kpi-value {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--text-1);
+  line-height: 1;
+  letter-spacing: -1px;
+}
+
+.kpi-unit {
+  font-size: 0.75rem;
+  color: var(--text-3);
+  margin-left: 4px;
+}
+
+.kpi-delta {
+  font-size: 0.78rem;
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.delta-up   { color: var(--green); }
+.delta-down { color: var(--red); }
+.delta-stable { color: var(--text-3); }
+
+/* ─── Semáforo Cards ─────────────────────────────────────────────────────── */
+.semaforo-card {
+  background: var(--bg-card);
+  border-radius: 14px;
+  padding: 22px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.semaforo-green  { border: 1px solid rgba(16,185,129,0.4);  box-shadow: var(--glow-g); }
+.semaforo-yellow { border: 1px solid rgba(245,158,11,0.4);  box-shadow: 0 0 20px rgba(245,158,11,0.25); }
+.semaforo-red    { border: 1px solid rgba(239,68,68,0.4);   box-shadow: var(--glow-r); }
+
+.semaforo-indicator {
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 8px;
+  animation: pulse 2s infinite;
+}
+
+.ind-green  { background: var(--green);  box-shadow: 0 0 10px var(--green); }
+.ind-yellow { background: var(--amber);  box-shadow: 0 0 10px var(--amber); animation: pulse-amber 2s infinite; }
+.ind-red    { background: var(--red);    box-shadow: 0 0 10px var(--red);   animation: pulse-red 1.5s infinite; }
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}
+@keyframes pulse-amber {
+  0%, 100% { opacity: 1; box-shadow: 0 0 10px var(--amber); }
+  50%       { opacity: 0.5; box-shadow: 0 0 4px var(--amber); }
+}
+@keyframes pulse-red {
+  0%, 100% { opacity: 1; box-shadow: 0 0 14px var(--red); }
+  50%       { opacity: 0.4; box-shadow: 0 0 4px var(--red); }
+}
+
+/* ─── Section headings ────────────────────────────────────────────────────── */
+.section-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-1);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.section-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--border), transparent);
+}
+
+.section-badge {
+  font-size: 0.62rem;
+  padding: 3px 8px;
+  border-radius: 20px;
+  background: rgba(0,245,255,0.1);
+  border: 1px solid var(--border);
+  color: var(--cyan);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-family: 'Courier New', monospace;
+}
+
+/* ─── Charts wrapper ─────────────────────────────────────────────────────── */
+.chart-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+  transition: box-shadow 0.25s;
+}
+
+.chart-card:hover { box-shadow: var(--glow-c); }
+
+.chart-title {
+  font-size: 0.78rem;
+  color: var(--text-2);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* ─── Table ──────────────────────────────────────────────────────────────── */
+.dash-table-container { border-radius: 10px; overflow: hidden; }
+
+.dash-spreadsheet-container .dash-spreadsheet-inner table {
+  border-collapse: collapse !important;
+}
+
+.dash-header {
+  background: rgba(0,245,255,0.08) !important;
+  color: var(--cyan) !important;
+  font-size: 0.72rem !important;
+  letter-spacing: 1px !important;
+  text-transform: uppercase !important;
+  border-bottom: 1px solid var(--border) !important;
+  font-family: 'Courier New', monospace !important;
+}
+
+.dash-cell {
+  background: var(--bg-card) !important;
+  color: var(--text-1) !important;
+  border-bottom: 1px solid rgba(0,245,255,0.06) !important;
+  font-size: 0.82rem !important;
+}
+
+.dash-cell:hover { background: rgba(0,245,255,0.05) !important; }
+
+/* ─── Summary bar at top of exec summary ────────────────────────────────── */
+.summary-bar {
+  display: flex;
+  gap: 1px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.summary-item {
+  flex: 1;
+  padding: 14px 18px;
+  background: var(--bg-card);
+  text-align: center;
+}
+
+.summary-item:hover { background: var(--bg-card-hover); }
+
+.summary-val {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--cyan);
+}
+
+.summary-lbl {
+  font-size: 0.68rem;
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 2px;
+}
+
+/* ─── Color status dot para tabla ────────────────────────────────────────── */
+.dot-green  { color: var(--green); }
+.dot-yellow { color: var(--amber); }
+.dot-red    { color: var(--red);   }
+
+/* ─── Dash Dropdown moderno (versiones recientes) ────────────────────────── */
+
+/* Contenedor del select */
+.dash-dropdown > div:first-child,
+.Select.is-searchable > .Select-control,
+.Select > .Select-control {
+  background: rgba(0, 180, 220, 0.10) !important;
+  border: 1px solid rgba(0, 210, 240, 0.35) !important;
+  border-radius: 8px !important;
+  min-height: 36px !important;
+  box-shadow: none !important;
+}
+
+/* Texto seleccionado en el control */
+.Select-single-value, .Select--single .Select-value,
+.Select-value .Select-value-label {
+  color: #e0f7ff !important;
+  line-height: 34px !important;
+}
+
+/* Flecha del dropdown */
+.Select-arrow { border-top-color: #7dd3fc !important; }
+.is-open .Select-arrow { border-bottom-color: #00f5ff !important; }
+
+/* Multi-select tags */
+.Select-multi-value-wrapper .Select-value {
+  background: rgba(0, 180, 220, 0.2) !important;
+  border: 1px solid rgba(0, 210, 240, 0.4) !important;
+  border-radius: 4px !important;
+  color: #e0f7ff !important;
+}
+
+/* ── Nuevo API Dash (sin react-select) ── */
+.dash-dropdown input,
+.dash-dropdown .Select-input > input {
+  color: #e0f7ff !important;
+  caret-color: #00f5ff !important;
+}
+
+/* Texto de placeholder en el control */
+.Select-placeholder,
+.Select--single .Select-placeholder {
+  color: #7dd3fc !important;
+  line-height: 34px !important;
+}
+
+/* Separador en el menu */
+.Select-menu {
+  background: #071e30 !important;
+}
+
+/* Estado abierto — borde glow */
+.Select.is-open > .Select-control {
+  border-color: rgba(0, 230, 255, 0.6) !important;
+  box-shadow: 0 0 8px rgba(0, 230, 255, 0.2) !important;
+  border-bottom-left-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
+
+/* ─── Responsive ─────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .kpi-value { font-size: 1.5rem; }
+  #filter-panel { flex-direction: column; align-items: flex-start; }
+}
+
+/* ─── Tab nav y contenido — debajo de los filtros ────────────────────────── */
+.tab-nav {
+  position: relative;
+  z-index: 10;          /* debajo del filter-panel (z-index:500) */
+}
+
+.tab-content {
+  position: relative;
+  z-index: 1;           /* el contenido nunca tapa los dropdowns */
+  animation: fadeInUp 0.35s ease;
+}
+
+/* ─── Animate-in for sections ────────────────────────────────────────────── */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: olist_postgres
+    environment:
+      POSTGRES_USER: olist
+      POSTGRES_PASSWORD: olist123
+      POSTGRES_DB: olist_bi
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U olist -d olist_bi"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
+
+# ─── Conexión DBeaver ──────────────────────────────────────────────────────────
+# Host:     localhost
+# Puerto:   5432
+# Database: olist_bi
+# Usuario:  olist
+# Password: olist123
+# Driver:   PostgreSQL
+# URL JDBC: jdbc:postgresql://localhost:5432/olist_bi
+# ──────────────────────────────────────────────────────────────────────────────

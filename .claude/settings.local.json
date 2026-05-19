@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pip install *)",
+      "Bash(python -c ' *)",
+      "Bash(start python *)",
+      "Bash(python -c \"import sys; print\\(sys.executable, sys.version\\)\")"
+    ]
+  }
+}
